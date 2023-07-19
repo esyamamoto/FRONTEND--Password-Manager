@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 type PropsForm = {
   handleCadastrar: () => void;
+  handleCancelar: () => void;
 };
 
 // type estadoInicial = {
@@ -11,7 +12,7 @@ type PropsForm = {
 //  url: string;
 // };
 
-function Form({ handleCadastrar }: PropsForm) {
+function Form({ handleCadastrar, handleCancelar }: PropsForm) {
   const [nameService, setnameService] = useState('');
   const [login, setLogin] = useState('');
   const [password, setpassword] = useState('');
@@ -23,6 +24,7 @@ function Form({ handleCadastrar }: PropsForm) {
 
   // Verifica se a string não está vazia
   const stringValid = (value: string) => value !== '';
+
   // Verifica se todos os campos do formulário são válidos
   const validEverthing = stringValid(nameService) && stringValid(login);
 
@@ -129,7 +131,7 @@ function Form({ handleCadastrar }: PropsForm) {
       <button type="submit" disabled={ !validEverthing || !isFormValid() }>
         Cadastrar
       </button>
-      <button type="button" onClick={ handleCadastrar }>
+      <button type="button" onClick={ handleCancelar }>
         Cancelar
       </button>
     </form>
