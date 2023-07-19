@@ -188,8 +188,8 @@ export default function Form() {
               <ul>
                 {infos.reverse().map((estadoInicial, index) => (
                   <li key={ index }>
-                    <a 
-                      href= {estadoInicial.url}
+                    <a
+                      href={ estadoInicial.url }
                       target="_blank"
                       rel="noopener noreferrer"
                     >
