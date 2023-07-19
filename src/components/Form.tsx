@@ -5,18 +5,19 @@ type PropsForm = {
   handleCancelar: () => void;
 };
 
-// type estadoInicial = {
-//  nameService: string;
-//  login: string;
-//  password: string;
-//  url: string;
-// };
+type estadoInicial = {
+  nameService: string;
+  login: string;
+  password: string;
+  url: string;
+};
 
 function Form({ handleCadastrar, handleCancelar }: PropsForm) {
   const [nameService, setnameService] = useState('');
   const [login, setLogin] = useState('');
   const [password, setpassword] = useState('');
   const [url, setUrl] = useState('');
+  const [hidePassword, sethidePassword] = useState(false); // senhas começam mostrando
 
   // req4 - Validação dos campos do formulário----------------------------------------------------------------------------------------------
   const valid = 'valid-password-check';
@@ -76,6 +77,16 @@ function Form({ handleCadastrar, handleCancelar }: PropsForm) {
     setpassword(target.value);
   }
 
+  // Atualiza o estado do checkbox, tipo se esconde ou exibe a senha /  esconder as senhas-->HIDEPASSWORD FOR TRUE
+  const newStatePassword = () => {
+    sethidePassword((oldState) => !oldState);
+  };
+  const showOrHidePassword = () => {
+    if (hidePassword) {
+      return '******';
+    }
+  };
+
   // req2 - form
   // req 4 - botao - isFormValid -> true: o botão será habilitado
   // req 5 - display para a validação da senha------------------------------------------------------------------------------------------------
@@ -101,7 +112,7 @@ function Form({ handleCadastrar, handleCancelar }: PropsForm) {
       <input
         id="password"
         type="password"
-        value={ password }
+        value={ showOrHidePassword() }
         onChange={ handleTargetPassword }
       />
 
@@ -126,6 +137,18 @@ function Form({ handleCadastrar, handleCancelar }: PropsForm) {
         <p className={ /\W|_/.test(password) ? valid : invalid }>
           Possuir algum caractere especial
         </p>
+      </div>
+
+      <div>
+        <label htmlFor="hidePassword">
+          <input
+            id="hidePassword"
+            type="checkbox"
+            checked={ hidePassword }
+            onChange={ newStatePassword }
+          />
+          Esconder senhas
+        </label>
       </div>
 
       <button type="submit" disabled={ !validEverthing || !isFormValid() }>
