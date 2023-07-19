@@ -84,7 +84,7 @@ function Form({ handleCadastrar }: PropsForm) {
         id="nameService"
         type="text"
         value={ nameService }
-        onChange={ handleTargetPassword }
+        onChange={ ({ target }) => setnameService(target.value) }
       />
 
       <label htmlFor="login">Login</label>
@@ -100,7 +100,7 @@ function Form({ handleCadastrar }: PropsForm) {
         id="password"
         type="password"
         value={ password }
-        onChange={ ({ target }) => setpassword(target.value) }
+        onChange={ handleTargetPassword }
       />
 
       <label htmlFor="url">URL</label>
