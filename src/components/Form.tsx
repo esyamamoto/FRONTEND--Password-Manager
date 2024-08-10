@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import '../style/Form.css';
 
 type EstadoInicial = {
   url: string;
@@ -8,27 +9,33 @@ type EstadoInicial = {
 };
 
 export default function Form() {
-  const [nameService, setnameService] = useState('');
+  const [nameService, setNameService] = useState('');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [url, setUrl] = useState('');
-  const [formVisible, setformVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
   const [formValid, setFormValid] = useState(false);
 
   const [infos, setInfos] = useState<EstadoInicial[]>([]);
-  const [hidePassword, setHidePassword] = useState(false); // senhas começam mostrando
+  const [hidePassword, setHidePassword] = useState(false);
   const [typePassword, setTypePassword] = useState('password');
 
-  // form ta visivel ou nao
+  // Atualiza a validade do formulário sempre que algum campo muda
+  useEffect(() => {
+    const isValid = validEverything && isPasswordValid();
+    setFormValid(isValid);
+  }, [nameService, login, password, url]);
+
+  // form ta visível ou não
   const handleCadastrarButton = () => {
-    setformVisible(true);
+    setFormVisible(true);
   };
 
   const handleCancelarButton = () => {
-    setformVisible(false);
+    setFormVisible(false);
   };
 
-  // evento enviar o form
+  // Evento enviar o form
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const newService: EstadoInicial = {
@@ -37,75 +44,61 @@ export default function Form() {
       password,
       url,
     };
-    setInfos([newService, ...infos.slice().reverse()]);
-    setformVisible(false);
+    setInfos([newService, ...infos]);
+    setFormVisible(false);
     resetForm();
   };
 
-  // remove um serviço da lista de informações
+  // Remove um serviço da lista de informações
   const deleteService = (index: number) => {
-    const updatedinfos = [...infos]; // atribuir a nova variavel para nao perder o estado inicial
-    updatedinfos.splice(index, 1); // pode ser filter?
-    setInfos(updatedinfos);
+    const updatedInfos = infos.filter((_, i) => i !== index);
+    setInfos(updatedInfos);
   };
-  // CHECKBOX -- visivel ou nao a senha
-  const passwordHideorNot = () => {
+
+  // CHECKBOX -- visível ou não a senha
+  const passwordHideOrNot = () => {
     setHidePassword(!hidePassword);
   };
-  // senha ta visivel como text ou nao visivel como password
+
+  // Senha visível como text ou não visível como password
   const passwordType = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (typePassword === 'password') {
-      setTypePassword('text');
-    } else {
-      setTypePassword('password');
-    }
+    setTypePassword(typePassword === 'password' ? 'text' : 'password');
   };
-  // requisitos senha e login
+
   // Verifica se a string não está vazia
-  const stringValid = (value: string) => value !== '';
-  // Verifica se login e  nome sao validos
-  const validEverthing = stringValid(nameService) && stringValid(login);
-  // requisição senha
+  const stringValid = (value: string) => value.trim() !== '';
+
+  // Verifica se login e nome são válidos
+  const validEverything = stringValid(nameService) && stringValid(login);
+
+  // Requisito senha
   const isPasswordValid = () => {
     const passwordMin = password.length >= 8;
     const passwordMax = password.length <= 16;
-    const hasNumberandLetters = /[0-9]/.test(password) && /[a-zA-Z]/.test(password);
-    const caracteresEspeciais = /\W|_/.test(password); // https://pt.stackoverflow.com/questions/342605/verificar-a-exist%C3%AAncia-de-caracteres-especiais-em-uma-string-utilizando-regexp
+    const hasNumberAndLetters = /[0-9]/.test(password) && /[a-zA-Z]/.test(password);
+    const caracteresEspeciais = /\W|_/.test(password);
 
-    return (
-      passwordMin
-      && passwordMax
-      && hasNumberandLetters
-      && caracteresEspeciais
-    );
-  };
-  // verifica login, nome e a senha
-  const isFormValid = () => {
-    setFormValid(validEverthing && isPasswordValid);
+    return passwordMin && passwordMax && hasNumberAndLetters && caracteresEspeciais;
   };
 
-  // req4 - Validação dos campos do formulário
+  // Requisitos do formulário
   const valid = 'valid-password-check';
   const invalid = 'invalid-password-check';
 
   const resetForm = () => {
-    setnameService('');
+    setNameService('');
     setLogin('');
     setPassword('');
     setUrl('');
     setTypePassword('password');
   };
 
-  // atualizar o estado password
+  // Atualiza o estado da senha
   const handleTargetPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    isFormValid();
   };
 
-  // req2 - form
-  // req 4 - botao - isFormValid -> true: o botão será habilitado
-  // req 5 - display para a validação da senha-----------------------------------------------
   return (
     <div>
       {formVisible ? (
@@ -115,7 +108,7 @@ export default function Form() {
             id="nameService"
             type="text"
             value={ nameService }
-            onChange={ ({ target }) => setnameService(target.value) }
+            onChange={ ({ target }) => setNameService(target.value) }
           />
           <label htmlFor="login">Login</label>
           <input
@@ -131,14 +124,12 @@ export default function Form() {
             value={ password }
             onChange={ handleTargetPassword }
           />
-
           <button
             data-testid="show-hide-form-password"
             onClick={ passwordType }
           >
             Mostrar/Esconder senha
           </button>
-
           <div>
             <p className={ password.length >= 8 ? valid : invalid }>
               Possuir 8 ou mais caracteres
@@ -153,7 +144,6 @@ export default function Form() {
               Possuir algum caractere especial
             </p>
           </div>
-
           <label htmlFor="url">URL</label>
           <input
             type="text"
@@ -162,32 +152,35 @@ export default function Form() {
             value={ url }
             onChange={ ({ target }) => setUrl(target.value) }
           />
-
-          <button type="submit" disabled={ !formValid } onClick={ handleSubmit }>
+          <button
+            id="buttonCadastrar"
+            type="submit"
+            disabled={ !formValid }
+            onClick={ handleSubmit }
+          >
             Cadastrar
           </button>
-          <button onClick={ handleCancelarButton }>Cancelar</button>
+          <button onClick={ handleCancelarButton } id="remove-btn">Cancelar</button>
         </form>
       ) : (
-        <>
+        <div className="formsClass">
           <label htmlFor="hidePassword">
             <input
               type="checkbox"
               id="hidePassword"
               checked={ hidePassword }
-              onChange={ passwordHideorNot }
+              onChange={ passwordHideOrNot }
             />
             Esconder senhas
           </label>
-
           {infos.length === 0 ? (
             <p>Nenhuma senha cadastrada</p>
           ) : (
             <>
               <h4>Serviços cadastrados:</h4>
               <ul>
-                {infos.reverse().map((estadoInicial, index) => (
-                  <li key={ index }>
+                {infos.map((estadoInicial, index) => (
+                  <li key={ index } className="password-card">
                     <a
                       href={ estadoInicial.url }
                       target="_blank"
@@ -196,8 +189,9 @@ export default function Form() {
                       {estadoInicial.nameService}
                     </a>
                     <p>{estadoInicial.login}</p>
-                    <p>{ hidePassword ? '******' : estadoInicial.password}</p>
+                    <p>{hidePassword ? '******' : estadoInicial.password}</p>
                     <button
+                      id="remove-btn"
                       data-testid="remove-btn"
                       onClick={ () => deleteService(index) }
                     >
@@ -208,10 +202,14 @@ export default function Form() {
               </ul>
             </>
           )}
-          <button onClick={ handleCadastrarButton } name="Cadastrar nova senha">
+          <button
+            onClick={ handleCadastrarButton }
+            name="Cadastrar nova senha"
+            id="buttonCadastrar"
+          >
             Cadastrar nova senha
           </button>
-        </>
+        </div>
       )}
     </div>
   );

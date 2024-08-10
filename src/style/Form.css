@@ -1,0 +1,144 @@
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  background-color: #2c2c2c;
+  color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  max-width: 500px;
+  margin: 20px auto; 
+}
+  
+input[type="text"] {
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #444;
+  border-radius: 5px;
+  background-color: #1f1f1f;
+  color: #ffffff;
+}
+/* Container for the list of registered services */
+.formsClass {
+  margin: 20px auto;
+  padding: 20px;
+  max-width: 600px;
+  background-color: #2c2c2c; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
+
+.formsClass h4 {
+  color: #ffffff; 
+  margin-bottom: 15px; 
+}
+
+.formsClass ul {
+  list-style-type: none; 
+  padding: 0;
+  margin: 0; 
+}
+
+.formsClass li {
+  margin-bottom: 15px; 
+}
+
+.formsClass button {
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 12px;
+}
+
+.formsClass button:hover {
+  background-color: #c82333;
+}
+
+
+button {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  align-self: flex-start;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Adjusted Button Styles */
+#remove-btn {
+  padding: 5px 10px; 
+  background-color: #dc3545;
+  color: #ffffff;
+  border: none;
+  border-radius: 3px; 
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 12px; 
+}
+
+#remove-btn:hover {
+  background-color: #990312;
+}
+
+p {
+  margin: 5px 0;
+}
+
+label {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#buttonCadastrar {
+  background-color: #007bff;
+  margin-bottom: 12px;
+}
+
+#buttonCadastrar:hover {
+  background-color: #014996;
+  margin-bottom: 12px;
+}
+  
+/* Card Styles for Passwords */
+.password-card {
+  background-color: #1f1f1f;
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 10px; 
+  margin: 10px auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  max-width: 40%; 
+}
+
+.password-card a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.password-card a:hover {
+  text-decoration: underline;
+}
+
+.password-card p {
+  margin: 5px 0;
+}
+
+.password-card button {
+  margin-top: 8px; 
+  padding: 5px 8px; 
+  font-size: 12px;
+} 
+
